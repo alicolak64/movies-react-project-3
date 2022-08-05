@@ -8,7 +8,7 @@ import SearchBar from './SearchBar';
 import MovieList from './MovieList';
 
 
-console.log(process.env.REACT_APP_TMDB_API_KEY);
+
 
 /*
 HTTP Method
@@ -48,10 +48,10 @@ class App extends React.Component {
 
   async componentDidMount() {  // Axios method with real api TMDB Movie   // axios dowload npm i axios
 
-    const baseUrl = `https://api.themoviedb.org/3/movie/popular?api_key=${process.env.REACT_APP_TMDB_API_KEY}&language=en-US&page=1`;
+    const baseUrl = `https://api.themoviedb.org/3/list/8212729?api_key=${process.env.REACT_APP_API_KEY}&language=en-US`;
     const response = await axios.get(baseUrl);
     // console.log(response.data);
-    const data = response.data.results;
+    const data = response.data.items;
     console.log(data);
     this.setState({
       movies: data
@@ -59,10 +59,12 @@ class App extends React.Component {
   }
 
   deleteMovie = async (movie) => {   // Axios method 
-    const baseUrl = "http://localhost:3002/movies/" + movie.id;
+    const baseUrl = `https://api.themoviedb.org/3/list/8212729/remove_item?media_id=${movie.id}&session_id=${process.env.REACT_APP_SESSION_ID}&api_key=${process.env.REACT_APP_API_KEY}`
     //const baseUrl2 = `http://localhost:3002/movies/${movie.id}`;
 
-    await axios.delete(baseUrl);
+    
+
+    await axios.post(baseUrl);
 
     const newMovieList = this.state.movies.filter(
       m => m.id !== movie.id
